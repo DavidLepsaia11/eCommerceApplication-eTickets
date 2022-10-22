@@ -6,7 +6,7 @@ namespace eTickets.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Profile Picture UR")]
+        [Display(Name = "Profile Picture")]
         public string ProfilePictureURL { get; set; }
 
         [Display(Name = "Full Name")]
