@@ -14,7 +14,8 @@ namespace eTickets.Data.Service
 
         public void Add(Actor actor)
         {
-            throw new NotImplementedException();
+            _dbContext.Actors.AddAsync(actor);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
