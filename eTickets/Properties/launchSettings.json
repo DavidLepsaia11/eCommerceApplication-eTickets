@@ -11,7 +11,7 @@
     "eTickets": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "Movies",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
