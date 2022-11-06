@@ -1,7 +1,7 @@
 ﻿@model Actor
 
 @{
-    ViewData["Title"] = "Add a new Actor";
+    ViewData["Title"] = "Actor Details";
 }
 
 <div class="row text">
@@ -19,7 +19,6 @@
                 <div class="form-group">
                     <label asp-for="ProfilePictureURL" class="control-label"></label>
                     <input asp-for="ProfilePictureURL" class="form-control" readonly />
-                    <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
                 </div>
 
                 <br />
@@ -27,7 +26,6 @@
                 <div class="form-group">
                     <label asp-for="FullName" class="control-label"></label>
                     <input asp-for="FullName" class="form-control" readonly />
-                    <span asp-validation-for="FullName" class="text-danger"></span>
                 </div>
 
                 <br />
@@ -35,7 +33,6 @@
                 <div class="form-group">
                     <label asp-for="Bio" class="control-label"></label>
                     <input asp-for="Bio" class="form-control" readonly />
-                    <span asp-validation-for="Bio" class="text-danger"></span>
                 </div>
 
                 <br />

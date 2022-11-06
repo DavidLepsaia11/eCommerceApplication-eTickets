@@ -19,6 +19,7 @@ namespace eTickets.Controllers
             return View(allActors);
         }
 
+        #region Create
         [HttpPost]
         public async Task<IActionResult> Create([Bind("FullName,ProfilePictureURL,Bio")] Actor actor)
         {
@@ -37,17 +38,21 @@ namespace eTickets.Controllers
         { 
             return View();
         }
+        #endregion
 
+        #region Details
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         { 
-           var actorDetails =  await _service.GetByIdAsync(id);
+            var actorDetails =  await _service.GetByIdAsync(id);
 
             if (actorDetails == null) return View("Empty");
 
             return View(actorDetails);
         }
+        #endregion
 
+        #region Delete
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -59,7 +64,6 @@ namespace eTickets.Controllers
             }
             return View(actor); 
         }
-
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(int id)
@@ -74,6 +78,34 @@ namespace eTickets.Controllers
              await _service.DeleteAsync(id);
             return RedirectToAction("Index");   
         }
-        
+        #endregion
+
+        #region Edit
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var actor = await _service.GetByIdAsync(id);
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            return View(actor);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        public async Task<IActionResult> EditConfirm(int id, [Bind("FullName,ProfilePictureURL,Bio,Id")] Actor updatedActor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(updatedActor);
+            }
+            await _service.UpdateAsync(id,updatedActor);
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
     }
 }

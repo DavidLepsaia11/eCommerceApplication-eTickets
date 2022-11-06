@@ -37,12 +37,14 @@ namespace eTickets.Data.Service
 
         public async Task<Actor> GetByIdAsync(int id)
         {
-           return await _dbContext.FindAsync<Actor>(id);
+           return await _dbContext.Actors.FindAsync(id);
         }
 
-        public Actor Update(int id, Actor newActor)
+        public async Task<Actor> UpdateAsync(int id, Actor actor)
         {
-            throw new NotImplementedException();
+            _dbContext.Update(actor);
+             _dbContext.SaveChanges();
+            return actor;
         }
     }
 }
