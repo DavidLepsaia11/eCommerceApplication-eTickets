@@ -12,26 +12,32 @@ namespace eTickets.Data.Service
             _dbContext = dbContext;
         }
 
-        public void Add(Actor actor)
+        public async Task AddAsync(Actor actor)
         {
-            _dbContext.Actors.AddAsync(actor);
-            _dbContext.SaveChanges();
+           await _dbContext.Actors.AddAsync(actor);
+           await  _dbContext.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var actor = await _dbContext.Actors.FindAsync(id);
+
+            if (actor !=null)
+            {
+                _dbContext.Actors.Remove(actor);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
-        public async Task<IEnumerable<Actor>> GetAll()
+        public async Task<IEnumerable<Actor>> GetAllAsync()
         {
             var result = await _dbContext.Actors.ToListAsync();
             return result;
         }
 
-        public Actor GetById(int id)
+        public async Task<Actor> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+           return await _dbContext.FindAsync<Actor>(id);
         }
 
         public Actor Update(int id, Actor newActor)

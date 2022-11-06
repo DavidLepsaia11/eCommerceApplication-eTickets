@@ -15,7 +15,7 @@ namespace eTickets.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var allActors = await _service.GetAll();
+            var allActors = await _service.GetAllAsync();
             return View(allActors);
         }
 
@@ -26,7 +26,8 @@ namespace eTickets.Controllers
             {
                 return View(actor);
             }
-            _service.Add(actor);
+
+           await _service.AddAsync(actor);
 
             return RedirectToAction("Index");
         }
@@ -37,15 +38,42 @@ namespace eTickets.Controllers
             return View();
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         { 
-           var actorDetailds =  _service.GetById(id);
+           var actorDetails =  await _service.GetByIdAsync(id);
 
-            if (actorDetailds == null) return View("Empty");
+            if (actorDetails == null) return View("Empty");
 
-            return View(actorDetailds);
+            return View(actorDetails);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var actor = await _service.GetByIdAsync(id);
+
+            if (actor == null)
+            {
+                return NotFound();
+            }
+            return View(actor); 
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var actor = await _service.GetByIdAsync(id);
+           
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+             await _service.DeleteAsync(id);
+            return RedirectToAction("Index");   
+        }
+        
     }
 }
