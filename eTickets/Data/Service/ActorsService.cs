@@ -29,13 +29,18 @@ namespace eTickets.Data.Service
             }
         }
 
+        public Task<bool> Exists(int id)
+        {
+            return _dbContext.Actors.AnyAsync(a => a.Id == id);
+        }
+
         public async Task<IEnumerable<Actor>> GetAllAsync()
         {
             var result = await _dbContext.Actors.ToListAsync();
             return result;
         }
 
-        public async Task<Actor> GetByIdAsync(int id)
+        public async Task<Actor?> GetByIdAsync(int id)
         {
            return await _dbContext.Actors.FindAsync(id);
         }

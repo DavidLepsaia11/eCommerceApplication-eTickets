@@ -46,7 +46,7 @@ namespace eTickets.Controllers
         { 
             var actorDetails =  await _service.GetByIdAsync(id);
 
-            if (actorDetails == null) return View("Empty");
+            if (actorDetails == null) return View("NotFound");
 
             return View(actorDetails);
         }
@@ -86,7 +86,8 @@ namespace eTickets.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var actor = await _service.GetByIdAsync(id);
-            if (id == 0)
+
+            if (actor == null)
             {
                 return NotFound();
             }
