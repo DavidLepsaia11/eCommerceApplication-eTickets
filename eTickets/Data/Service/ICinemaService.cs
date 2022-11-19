@@ -3,8 +3,8 @@ using eTickets.Models;
 
 namespace eTickets.Data.Service
 {
-    public interface IActorsService : IEntityBaseRepository<Actor>
+    public interface ICinemaService : IEntityBaseRepository<Cinema>
     {
-     
+
     }
 }

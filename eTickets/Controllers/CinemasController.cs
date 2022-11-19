@@ -1,4 +1,6 @@
 ﻿using eTickets.Data;
+using eTickets.Data.Service;
+using eTickets.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,17 +8,41 @@ namespace eTickets.Controllers
 {
     public class CinemasController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ICinemaService _service;
 
-        public CinemasController(AppDbContext context)
+        public CinemasController(ICinemaService service)
         {
-            _context = context;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var allCinemas = await _context.Cinemas.ToListAsync();
+            var allCinemas = await _service.GetAllAsync();
             return View(allCinemas);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var cinema = await _service.GetByIdAsync(id);
+
+            if (cinema == null)
+            {
+               return NotFound();
+            }
+            return View(cinema);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        public async Task<IActionResult> EditConfirm(int id, [Bind("Name,Logo,Description,Id")] Cinema updatedCinema)
+        {
+            // Cinema-ს მოდელს არ ადევს ვალიდაციები და ამიტომაც შემოდის if ოპერატორში.
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(updatedCinema);
+            //}
+            await _service.UpdateAsync(id, updatedCinema);
+            return RedirectToAction("Index");
         }
     }
 }
