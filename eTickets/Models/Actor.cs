@@ -19,6 +19,7 @@ namespace eTickets.Models
 
         [Display(Name = "Biography")]
         [Required(ErrorMessage = "Biography is required")]
+        [StringLength(450, MinimumLength = 20, ErrorMessage = "Biography must be between 20 and 450 chars")]
         public string Bio { get; set; }
 
         //Relationships

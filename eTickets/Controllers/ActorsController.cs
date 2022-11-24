@@ -105,7 +105,6 @@ namespace eTickets.Controllers
             await _service.UpdateAsync(id,updatedActor);
             return RedirectToAction("Index");
         }
-
         #endregion
 
     }
