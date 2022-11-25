@@ -21,6 +21,8 @@ namespace eTickets.Controllers
             return View(allCinemas);
         }
 
+        #region Edit
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -46,6 +48,10 @@ namespace eTickets.Controllers
             return RedirectToAction("Index");
         }
 
+        #endregion
+
+        #region Delete
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         { 
@@ -70,5 +76,28 @@ namespace eTickets.Controllers
             await _service.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+
+        #endregion
+
+        #region Create 
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Name,Logo,Description")] Cinema cinema)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(cinema);
+            }
+            await _service.AddAsync(cinema);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
     }
 }
