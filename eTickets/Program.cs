@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(
     //Services
     builder.Services.AddScoped<IActorsService, ActorsService>();
     builder.Services.AddScoped<ICinemaService,CinemaService>();
+    builder.Services.AddScoped<IProducerService, ProducerService>();
 
 
 var app = builder.Build();
