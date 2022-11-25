@@ -1,6 +1,6 @@
-﻿using eTickets.Data;
-using eTickets.Data.Service;
-using eTickets.Models;
+﻿
+using eTickets.Domain.Interfaces.Repositories;
+using eTickets.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,16 +8,16 @@ namespace eTickets.Controllers
 {
     public class ProducersController : Controller
     {
-        private readonly IProducerService _service;
+        private readonly IProducerRepository _repository;
 
-        public ProducersController(IProducerService service)
+        public ProducersController(IProducerRepository repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var allProducers = await _service.GetAllAsync();
+            var allProducers = await _repository.GetAllAsync();
             return View(allProducers);
         }
 
@@ -31,7 +31,7 @@ namespace eTickets.Controllers
                 return View(actor);
             }
 
-            await _service.AddAsync(actor);
+            await _repository.AddAsync(actor);
 
             return RedirectToAction("Index");
         }
@@ -47,7 +47,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var producerDetails = await _service.GetByIdAsync(id);
+            var producerDetails = await _repository.GetByIdAsync(id);
 
             if (producerDetails == null) return View("NotFound");
 
@@ -59,7 +59,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var producer = await _service.GetByIdAsync(id);
+            var producer = await _repository.GetByIdAsync(id);
 
             if (producer == null)
             {
@@ -71,14 +71,14 @@ namespace eTickets.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var producer = await _service.GetByIdAsync(id);
+            var producer = await _repository.GetByIdAsync(id);
 
             if (producer == null)
             {
                 return NotFound();
             }
 
-            await _service.DeleteAsync(id);
+            await _repository.DeleteAsync(id);
             return RedirectToAction("Index");
         }
         #endregion
@@ -88,7 +88,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var producer = await _service.GetByIdAsync(id);
+            var producer = await _repository.GetByIdAsync(id);
 
             if (producer == null)
             {
@@ -105,7 +105,7 @@ namespace eTickets.Controllers
             {
                 return View(updatedProducer);
             }
-            await _service.UpdateAsync(id, updatedProducer);
+            await _repository.UpdateAsync(id, updatedProducer);
             return RedirectToAction("Index");
         }
         #endregion

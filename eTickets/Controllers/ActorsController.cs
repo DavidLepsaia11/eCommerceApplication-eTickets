@@ -1,21 +1,21 @@
-﻿using eTickets.Data.Service;
-using eTickets.Models;
+﻿using eTickets.Domain.Interfaces.Repositories;
+using eTickets.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eTickets.Controllers
 {
     public class ActorsController : Controller
     {
-        private readonly IActorsService _service;
+        private readonly IActorRepository _repository;
 
-        public ActorsController(IActorsService service)
+        public ActorsController(IActorRepository repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var allActors = await _service.GetAllAsync();
+            var allActors = await _repository.GetAllAsync();
             return View(allActors);
         }
 
@@ -28,7 +28,7 @@ namespace eTickets.Controllers
                 return View(actor);
             }
 
-           await _service.AddAsync(actor);
+           await _repository.AddAsync(actor);
 
             return RedirectToAction("Index");
         }
@@ -44,7 +44,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         { 
-            var actorDetails =  await _service.GetByIdAsync(id);
+            var actorDetails =  await _repository.GetByIdAsync(id);
 
             if (actorDetails == null) return View("NotFound");
 
@@ -56,7 +56,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var actor = await _service.GetByIdAsync(id);
+            var actor = await _repository.GetByIdAsync(id);
 
             if (actor == null)
             {
@@ -68,14 +68,14 @@ namespace eTickets.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var actor = await _service.GetByIdAsync(id);
+            var actor = await _repository.GetByIdAsync(id);
            
             if (actor == null)
             {
                 return NotFound();
             }
 
-             await _service.DeleteAsync(id);
+             await _repository.DeleteAsync(id);
             return RedirectToAction("Index");   
         }
         #endregion
@@ -85,7 +85,7 @@ namespace eTickets.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var actor = await _service.GetByIdAsync(id);
+            var actor = await _repository.GetByIdAsync(id);
 
             if (actor == null)
             {
@@ -102,7 +102,7 @@ namespace eTickets.Controllers
             {
                 return View(updatedActor);
             }
-            await _service.UpdateAsync(id,updatedActor);
+            await _repository.UpdateAsync(id,updatedActor);
             return RedirectToAction("Index");
         }
         #endregion

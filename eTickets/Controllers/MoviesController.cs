@@ -1,4 +1,4 @@
-﻿using eTickets.Data;
+﻿using eTickets.Infrastracture.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

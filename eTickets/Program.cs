@@ -1,5 +1,8 @@
-using eTickets.Data;
-using eTickets.Data.Service;
+
+using eTickets.Domain.Interfaces.Repositories;
+using eTickets.Infrastracture.Data;
+using eTickets.Infrastracture.Repositories;
+using eTickets.Infrastracture.SeedDb;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,10 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(
     ));
 
 
-    //Services
-    builder.Services.AddScoped<IActorsService, ActorsService>();
-    builder.Services.AddScoped<ICinemaService,CinemaService>();
-    builder.Services.AddScoped<IProducerService, ProducerService>();
+    //Repositories
+    builder.Services.AddScoped<IActorRepository, ActorRepository>();
+    builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+    builder.Services.AddScoped<IProducerRepository, ProducerRepository>();
 
 
 var app = builder.Build();
