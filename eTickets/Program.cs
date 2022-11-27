@@ -3,7 +3,9 @@ using eTickets.Domain.Interfaces.Repositories;
 using eTickets.Infrastracture.Data;
 using eTickets.Infrastracture.Repositories;
 using eTickets.Infrastracture.SeedDb;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,21 @@ builder.Services.AddDbContext<AppDbContext>(
         builder.Configuration.GetConnectionString("DefaultConnectionString")
     ));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>
+    (options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+    })
+.AddEntityFrameworkStores<AppDbContext>();
 
-    //Repositories
-    builder.Services.AddScoped<IActorRepository, ActorRepository>();
+
+//Repositories
+builder.Services.AddScoped<IActorRepository, ActorRepository>();
     builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
     builder.Services.AddScoped<IProducerRepository, ProducerRepository>();
 
@@ -37,6 +51,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
