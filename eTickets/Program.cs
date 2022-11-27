@@ -5,6 +5,7 @@ using eTickets.Infrastracture.Repositories;
 using eTickets.Infrastracture.SeedDb;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using eTickets.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,17 +19,20 @@ builder.Services.AddDbContext<AppDbContext>(
         builder.Configuration.GetConnectionString("DefaultConnectionString")
     ));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>
-    (options =>
-    {
-        options.SignIn.RequireConfirmedAccount = true;
-        options.Password.RequireDigit = false;
-        options.Password.RequiredLength = 8;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = false;
-    })
-.AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AppDbContext>();
+
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>
+//    (options =>
+//    {
+//        options.SignIn.RequireConfirmedAccount = true;
+//        options.Password.RequireDigit = false;
+//        options.Password.RequiredLength = 8;
+//        options.Password.RequireNonAlphanumeric = false;
+//        options.Password.RequireUppercase = false;
+//        options.Password.RequireLowercase = false;
+//    })
+//.AddEntityFrameworkStores<AppDbContext>();
 
 
 //Repositories
