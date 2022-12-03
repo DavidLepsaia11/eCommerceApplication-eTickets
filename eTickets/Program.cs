@@ -19,8 +19,14 @@ builder.Services.AddDbContext<AppDbContext>(
         builder.Configuration.GetConnectionString("DefaultConnectionString")
     ));
 
+builder.Services.AddDbContext<eTicketsDbContext>(
+    options => options.UseSqlServer
+    (
+        builder.Configuration.GetConnectionString("DefaultConnectionString")
+    ));
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>();
+    .AddEntityFrameworkStores<eTicketsDbContext>();
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>
 //    (options =>
@@ -63,6 +69,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Movies}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 AppDbInitializer.Seed(app);
 app.Run();

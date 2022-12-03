@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using eTickets.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eTickets.Data;
 
-public class eTicketsDbContext : IdentityDbContext<IdentityUser>
+public class eTicketsDbContext : IdentityDbContext<ApplicationUser>
 {
     public eTicketsDbContext(DbContextOptions<eTicketsDbContext> options)
         : base(options)
@@ -17,5 +19,14 @@ public class eTicketsDbContext : IdentityDbContext<IdentityUser>
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
+        builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+    }
+}
+class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
+{
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+    {
+        builder.Property(u => u.LastName).HasMaxLength(255);
+        builder.Property(u => u.FirstName).HasMaxLength(255);
     }
 }
