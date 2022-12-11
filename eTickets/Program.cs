@@ -26,7 +26,9 @@ builder.Services.AddDbContext<eTicketsDbContext>(
     ));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<eTicketsDbContext>();
+
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>
 //    (options =>
@@ -40,11 +42,16 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 //    })
 //.AddEntityFrameworkStores<AppDbContext>();
 
+#region Authorization
+AddAuthorizationPolicies(builder.Services);
+
+#endregion
+
 
 //Repositories
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
-    builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
-    builder.Services.AddScoped<IProducerRepository, ProducerRepository>();
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+builder.Services.AddScoped<IProducerRepository, ProducerRepository>();
 
 
 var app = builder.Build();
@@ -74,3 +81,13 @@ app.MapRazorPages();
 
 AppDbInitializer.Seed(app);
 app.Run();
+
+void AddAuthorizationPolicies(IServiceCollection services)
+{
+    services.AddAuthorization(options => 
+    {
+        options.AddPolicy("RequireAdmin", policy => policy.RequireClaim("Administrator"));
+        options.AddPolicy("RequireManager", policy => policy.RequireClaim("Manager"));
+    }); 
+
+}

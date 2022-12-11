@@ -31,5 +31,8 @@ namespace eTickets.Infrastracture.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
+
+
     }
 }
